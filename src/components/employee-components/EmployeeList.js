@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import departmentService from "../services/departmentService";
+import employeeService from "../../services/employeeService";
 import { Link } from "react-router-dom";
 
-const DepartmentList = () => {
-  const [department, setDepartment] = useState([]);
-  const [currentDepartment, setCurrentDepartment] = useState(null);
+const EmployeeList = () => {
+  const [employee, setEmployee] = useState([]);
+  const [currentEmployee, setCurrentEmployee] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [searchName, setSearchName] = useState("");
 
   useEffect(() => {
-    retrieveDepartment();
+    retrieveEmployee();
   }, []);
 
   const onChangeSearchName = e => {
@@ -17,10 +17,10 @@ const DepartmentList = () => {
     setSearchName(searchName);
   };
 
-  const retrieveDepartment = () => {
-    departmentService.getAll()
+  const retrieveEmployee = () => {
+    employeeService.getAll()
       .then(response => {
-        setDepartment(response.data);
+        setEmployee(response.data);
         console.log(response.data);
       })
       .catch(e => {
@@ -29,18 +29,18 @@ const DepartmentList = () => {
   };
 
   const refreshList = () => {
-    retrieveDepartment();
-    setCurrentDepartment(null);
+    retrieveEmployee();
+    setCurrentEmployee(null);
     setCurrentIndex(-1);
   };
 
-  const setActiveDepartment = (department, index) => {
-    setCurrentDepartment(department);
+  const setActiveEmployee = (employee, index) => {
+    setCurrentEmployee(employee);
     setCurrentIndex(index);
   };
 
-  const removeAllDepartment = () => {
-    departmentService.removeAll()
+  const removeAllEmployee = () => {
+    employeeService.removeAll()
       .then(response => {
         console.log(response.data);
         refreshList();
@@ -51,9 +51,9 @@ const DepartmentList = () => {
   };
 
   const findByName = () => {
-    departmentService.findByName(searchName)
+    employeeService.findByName(searchName)
       .then(response => {
-        setCurrentDepartment(response.data);
+        setCurrentEmployee(response.data);
         console.log(response.data);
       })
       .catch(e => {
@@ -68,7 +68,7 @@ const DepartmentList = () => {
           <input
             type="text"
             className="form-control"
-            placeholder="Search by Department Name"
+            placeholder="Search by Employee Name"
             value={searchName}
             onChange={onChangeSearchName}
           />
@@ -84,63 +84,63 @@ const DepartmentList = () => {
         </div>
       </div>
       <div className="col-md-6">
-        <h4>Department List</h4>
+        <h4>Employee List</h4>
 
         <ul className="list-group">
-          {department &&
-            department.map((department, index) => (
+          {employee &&
+            employee.map((employee, index) => (
               <li
                 className={
                   "list-group-item " + (index === currentIndex ? "active" : "")
                 }
-                onClick={() => setActiveDepartment(department, index)}
+                onClick={() => setActiveEmployee(employee, index)}
                 key={index}
               >
-                {department.name}
+                {employee.name}
               </li>
             ))}
         </ul>
 
         <button
           className="m-3 btn btn-sm btn-danger"
-          onClick={removeAllDepartment}
+          onClick={removeAllEmployee}
         >
           Remove All
         </button>
       </div>
       <div className="col-md-6">
-        {currentDepartment ? (
+        {currentEmployee ? (
           <div>
-            <h4>Department</h4>
+            <h4>Employee</h4>
             <div>
               <label>
                 <strong>Name:</strong>
               </label>{" "}
-              {currentDepartment.name}
+              {currentEmployee.name}
             </div>
             <div>
               <label>
                 <strong>ID:</strong>
               </label>{" "}
-              {currentDepartment.id}
+              {currentEmployee.id}
             </div>
 
             <Link
-              to={"/department/" + currentDepartment.id}
+              to={"/employee/" + currentEmployee.id}
               className="badge badge-warning"
             >
               Edit
             </Link>
           </div>
         ) : (
-          <div>
-            <br />
-            <p>Please click...</p>
-          </div>
-        )}
+            <div>
+              <br />
+              <p>Please click...</p>
+            </div>
+          )}
       </div>
     </div>
   );
 };
 
-export default DepartmentList;
+export default EmployeeList;
