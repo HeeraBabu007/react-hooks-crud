@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import departmentService from "../services/departmentService";
+import departmentService from "../../services/departmentService";
 
 const Department = props => {
     const initialDepartmentState = {

@@ -97,7 +97,7 @@ const AddEmployee = () => {
                 className="form-control"
                 id="address"
                 required
-                value={employee.address
+                value={employee.address}
                 onChange={handleInputChange}
                 name="address"
               />
